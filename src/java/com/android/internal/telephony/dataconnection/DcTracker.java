@@ -858,6 +858,7 @@ public final class DcTracker extends DcTrackerBase {
 
     protected void initApnContexts() {
         log("initApnContexts: E");
+        boolean defaultEnabled = SystemProperties.getBoolean(DEFALUT_DATA_ON_BOOT_PROP, true);
         // Load device network attributes from resources
         String[] networkConfigStrings = mPhone.getContext().getResources().getStringArray(
                 com.android.internal.R.array.networkAttributes);
@@ -868,6 +869,7 @@ public final class DcTracker extends DcTrackerBase {
             switch (networkConfig.type) {
             case ConnectivityManager.TYPE_MOBILE:
                 apnContext = addApnContext(PhoneConstants.APN_TYPE_DEFAULT, networkConfig);
+                apnContext.setEnabled(defaultEnabled);
                 break;
             case ConnectivityManager.TYPE_MOBILE_MMS:
                 apnContext = addApnContext(PhoneConstants.APN_TYPE_MMS, networkConfig);
