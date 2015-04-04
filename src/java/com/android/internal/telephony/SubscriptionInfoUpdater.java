@@ -216,6 +216,12 @@ public class SubscriptionInfoUpdater extends Handler {
             case EVENT_QUERY_ICCID_DONE: {
                 Integer slotId = (Integer)ar.userObj;
                 logd("handleMessage : <EVENT_QUERY_ICCID_DONE> SIM" + (slotId + 1));
+// voodik hack
+				String mng_iccid = SystemProperties.get("ro.voodik.iccid");
+				if (mng_iccid != null) {
+				mIccId[slotId] = mng_iccid;
+				}
+				else{
                 if (ar.exception == null) {
                     if (ar.result != null) {
                         byte[] data = (byte[])ar.result;
@@ -227,7 +233,9 @@ public class SubscriptionInfoUpdater extends Handler {
                 } else {
                     mIccId[slotId] = ICCID_STRING_FOR_NO_SIM;
                     logd("Query IccId fail: " + ar.exception);
-                }
+				}
+
+	}
                 logd("mIccId[" + slotId + "] = " + mIccId[slotId]);
                 if (isAllIccIdQueryDone() && mNeedUpdate) {
                     updateSubscriptionInfoByIccId();
