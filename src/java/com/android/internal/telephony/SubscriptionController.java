@@ -34,6 +34,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.os.ServiceManager;
+import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.net.NetworkRequest;
 import android.preference.PreferenceManager;
@@ -260,7 +261,16 @@ public class SubscriptionController extends ISub.Stub {
     }
 
     private boolean isSubInfoReady() {
-        return mSubInfoReady || mSlotIdxToSubId.size() > 0;
+
+       String sim_state ;
+       sim_state = SystemProperties.get("gsm.sim.state");
+
+         if (sim_state.equals("READY")){
+            logd("sim_state is :" + sim_state);
+            return true;
+          } else {
+          return false;
+          }
     }
 
     private SubscriptionController(Phone phone) {
